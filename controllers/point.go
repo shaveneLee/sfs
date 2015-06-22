@@ -24,6 +24,16 @@ func (c *PointController) Test() {
 	}
 }
 
-func (c *PointController) index() {
+func (c *PointController) Index() {
 	c.TplNames = "points/index.tpl"
+	beego.TemplateLeft = "{{{"
+	beego.TemplateRight = "}}}"
+	c.Data["Str1"] = "aaa"
+}
+
+func (c *PointController) Edit() {
+	c.TplNames = "points/edit.tpl"
+	beego.TemplateLeft = "{{{"
+	beego.TemplateRight = "}}}"
+	c.Data["Str1"] = "aaa"
 }

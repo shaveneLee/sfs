@@ -13,13 +13,8 @@
 	<h2>Summary & Forward</h2>
 </div>
 
-<div ng-controller="SfsCtrl" class="well">
-	<pre>
-	{{data}}
-	</pre>
-</div>
-
-<div>
+<div ng-controller="SfsCtrl">
+<pre>{{data}}</pre>
 	<div class="panel panel-default col-md-6">
       <div class="panel-heading">Panel heading</div>
 
