@@ -29,12 +29,20 @@ func init() {
 	orm.RegisterModel(new(Points))
 }
 
-func (u *Points) GetPoints() []orm.Params {
+func (p *Points) GetPoints() []orm.Params {
 	var maps []orm.Params
 
 	o := orm.NewOrm()
 
-	o.QueryTable(new(Points)).Limit(10).Values(&maps)
+	o.QueryTable(new(Points)).Filter("status", 1).Values(&maps)
 
 	return maps
+}
+
+//任务类型枚举
+func (p *Points) GetTypeList() map[string]string {
+	TypeList := make(map[string]string)
+	TypeList["10"] = "Planning"
+	TypeList["20"] = "Unexpect"
+	return TypeList
 }

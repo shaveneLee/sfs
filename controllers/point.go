@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"fmt"
+	//	"fmt"
 	"github.com/astaxie/beego"
 	"sfs/models"
 )
@@ -10,30 +10,17 @@ type PointController struct {
 	beego.Controller
 }
 
-func (c *PointController) Test() {
-	c.TplNames = "points/index.tpl"
-
-	u := models.Points{}
-	maps := u.GetPoints()
-
-	for _, m := range maps {
-		//fmt.Println(m["Id"], m["Name"])
-		fmt.Println(m)
-		c.Data["Id"] = m["Id"]
-		c.Data["Name"] = m["Name"]
-	}
-}
-
 func (c *PointController) Index() {
-	c.TplNames = "points/index.tpl"
-	beego.TemplateLeft = "{{{"
-	beego.TemplateRight = "}}}"
 	c.Data["Str1"] = "aaa"
+	c.Data["json"] = "aaadd" // map[string]string{"ObjectId": "hello"}
+	c.ServeJson()
 }
 
 func (c *PointController) Edit() {
 	c.TplNames = "points/edit.tpl"
 	beego.TemplateLeft = "{{{"
 	beego.TemplateRight = "}}}"
-	c.Data["Str1"] = "aaa"
+	model := models.Points{}
+	c.Data["Str1"] = model.GetPoints()
+	c.Data["TypeList"] = model.GetTypeList()
 }

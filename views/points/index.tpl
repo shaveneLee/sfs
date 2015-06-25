@@ -14,9 +14,6 @@
 </div>
 
 <div ng-controller="SfsCtrl" class="well">
-	<pre>
-	{{data}}
-	</pre>
 </div>
 
 <div>

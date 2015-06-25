@@ -1,6 +1,11 @@
-.page-header .h2 {
-
+#page_title h2 {
+	margin: 0px;
 }
-.point-data .col-md-6 {
+
+#point_box .col-md-6 {
 	padding-left: 1px;
+}
+
+#point_box .span1, #point_box .span1 {
+	width: 55px;
 }
