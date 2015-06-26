@@ -17,6 +17,9 @@
 </div>
 {{{.Str1}}}
 <div ng-controller="SfsCtrl" id="point_box">
+	<div>
+		<a class="btn btn-primary" ng-click="saveData()">test</a>
+	</div>
 	<div class="panel panel-default col-md-6">
       <div class="panel-heading">This Week Summary</div>
 
@@ -34,8 +37,7 @@
         <tbody>
           <tr ng-repeat="row in Rows">
 			<td>
-				<span ng-if="10 == row.type" class="label label-primary">{{TypeList[row.type]}}</span>
-				<span ng-if="20 == row.type" class="label label-default">{{TypeList[row.type]}}</span>
+				<span ng-class="TypeClass[row.type]">{{TypeList[row.type]}}</span>
 			</td>
             <td><input type="text" ng-model="row.name" class="form-control" /></td>
             <td><input type="text" ng-model="row.hours" class="form-control span1" /></td>

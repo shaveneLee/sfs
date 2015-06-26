@@ -3,6 +3,10 @@ function SfsCtrl($scope, $http) {
 	$scope.DefaultLines = 7;
 	$scope.Rows = [];
 	$scope.TypeList = TypeList
+	$scope.TypeClass = {
+		10: 'label label-primary',
+		20: 'label label-default',
+	}
 	for(var i = 0; i <= $scope.DefaultLines; i++) {
 		var row = {
 			type: 10,
@@ -12,5 +16,21 @@ function SfsCtrl($scope, $http) {
 			score: 0,
 		}
 		$scope.Rows.push(row);	
+	}
+
+	$scope.saveData = function() {
+		alert('xx');
+		var data = {
+			name: 'sarong',
+		}
+		$http.post('/point/SavePoints', data).
+			error(function(data) {
+					console.log(data);
+					alert('error');
+			}).
+			success(function(data) {
+					console.log(data)
+					alert('success')
+			});
 	}
 }

@@ -2,6 +2,7 @@ package controllers
 
 import (
 	//	"fmt"
+	"encoding/json"
 	"github.com/astaxie/beego"
 	"sfs/models"
 )
@@ -23,4 +24,14 @@ func (c *PointController) Edit() {
 	model := models.Points{}
 	c.Data["Str1"] = model.GetPoints()
 	c.Data["TypeList"] = model.GetTypeList()
+}
+
+func (this *PointController) SavePoints() {
+	result := make(map[string]interface{})
+	result["sucess"] = true
+	result["message"] = "call success"
+	result["datas"] = "xxx"
+	json_str, _ := json.Marshal(result)
+	this.Ctx.Output.Body([]byte(json_str))
+	return
 }
