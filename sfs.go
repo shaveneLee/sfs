@@ -9,7 +9,7 @@ import (
 
 func init() {
 	orm.RegisterDriver("mysql", orm.DR_MySQL)
-	dbLink := "root:" + "root123@tcp(192.168.2.114:3306)/sfs?charset=utf8"
+	dbLink := "ocs:" + "root123@tcp(dbdev.gz.cvte.cn:3306)/sfs?charset=utf8"
 	orm.RegisterDataBase("default", "mysql", dbLink)
 	//orm.Debug = true
 	o := orm.NewOrm()

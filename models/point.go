@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-type Points struct {
+type Point struct {
 	Id           int
 	Name         string
 	Status       int16
@@ -26,21 +26,21 @@ type Points struct {
 }
 
 func init() {
-	orm.RegisterModel(new(Points))
+	orm.RegisterModel(new(Point))
 }
 
-func (p *Points) GetPoints() []orm.Params {
+func (p *Point) GetPoints() []orm.Params {
 	var maps []orm.Params
 
 	o := orm.NewOrm()
 
-	o.QueryTable(new(Points)).Filter("status", 1).Values(&maps)
+	o.QueryTable(new(Point)).Filter("status", 1).Values(&maps)
 
 	return maps
 }
 
 //任务类型枚举
-func (p *Points) GetTypeList() map[string]string {
+func (p *Point) GetTypeList() map[string]string {
 	TypeList := make(map[string]string)
 	TypeList["10"] = "Planning"
 	TypeList["20"] = "Unexpect"

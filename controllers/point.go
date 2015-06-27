@@ -5,25 +5,34 @@ import (
 	"encoding/json"
 	"github.com/astaxie/beego"
 	"sfs/models"
+	// "time"
 )
 
 type PointController struct {
 	beego.Controller
 }
 
-func (c *PointController) Index() {
-	c.Data["Str1"] = "aaa"
-	c.Data["json"] = "aaadd" // map[string]string{"ObjectId": "hello"}
-	c.ServeJson()
+func (this *PointController) Index() {
+	this.Data["Str1"] = "aaa"
+	this.Data["json"] = "aaadd"
+	this.ServeJson()
 }
 
-func (c *PointController) Edit() {
-	c.TplNames = "points/edit.tpl"
+func (this *PointController) Edit() {
+	this.TplNames = "point/edit.tpl"
 	beego.TemplateLeft = "{{{"
 	beego.TemplateRight = "}}}"
-	model := models.Points{}
-	c.Data["Str1"] = model.GetPoints()
-	c.Data["TypeList"] = model.GetTypeList()
+	model := models.Point{}
+	this.Data["Str1"] = model.GetPoints()
+
+	// this.Data["Str1"] = time.Now().Date()
+
+}
+
+func (this *PointController) GetTypeList() {
+	point := models.Point{}
+	this.Data["json"] = point.GetTypeList()
+	this.ServeJson()
 }
 
 func (this *PointController) SavePoints() {

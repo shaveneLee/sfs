@@ -2,11 +2,18 @@ function SfsCtrl($scope, $http) {
 	$scope.data = "sarong";
 	$scope.DefaultLines = 7;
 	$scope.Rows = [];
-	$scope.TypeList = TypeList
 	$scope.TypeClass = {
 		10: 'label label-primary',
 		20: 'label label-default',
 	}
+
+	//get type list options.
+	$http.get('/point/GetTypeList').error(function(data) {
+		alert('get type list error.')
+	}).success(function(data) {
+		$scope.TypeList = data;
+	});
+
 	for(var i = 0; i <= $scope.DefaultLines; i++) {
 		var row = {
 			type: 10,
