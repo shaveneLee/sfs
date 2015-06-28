@@ -5,8 +5,11 @@ import (
 	"encoding/json"
 	"github.com/astaxie/beego"
 	"sfs/models"
-	// "time"
+	"time"
 )
+
+//time format layout
+const t_layout = "2006-01-02"
 
 type PointController struct {
 	beego.Controller
@@ -25,8 +28,54 @@ func (this *PointController) Edit() {
 	model := models.Point{}
 	this.Data["Str1"] = model.GetPoints()
 
-	// this.Data["Str1"] = time.Now().Date()
+	this.Data["Str1"] = this.GetSunday()
 
+}
+
+func (this *PointController) GetMonday() string {
+	t := time.Now()
+	week := t.Weekday().String()
+	var monday string
+	switch week {
+	case "Sunday":
+		t = t.AddDate(0, 0, -6)
+	case "Monday":
+	case "Tuesday":
+		t = t.AddDate(0, 0, -1)
+	case "Wednesday":
+		t = t.AddDate(0, 0, -2)
+	case "Thursday":
+		t = t.AddDate(0, 0, -3)
+	case "Friday":
+		t = t.AddDate(0, 0, -4)
+	case "Saturday":
+		t = t.AddDate(0, 0, -5)
+	}
+	monday = t.Format(t_layout)
+	return monday
+}
+
+func (this *PointController) GetSunday() string {
+	t := time.Now()
+	week := t.Weekday().String()
+	var monday string
+	switch week {
+	case "Sunday":
+	case "Monday":
+		t = t.AddDate(0, 0, 6)
+	case "Tuesday":
+		t = t.AddDate(0, 0, 5)
+	case "Wednesday":
+		t = t.AddDate(0, 0, 4)
+	case "Thursday":
+		t = t.AddDate(0, 0, 3)
+	case "Friday":
+		t = t.AddDate(0, 0, 2)
+	case "Saturday":
+		t = t.AddDate(0, 0, 1)
+	}
+	monday = t.Format(t_layout)
+	return monday
 }
 
 func (this *PointController) GetTypeList() {
