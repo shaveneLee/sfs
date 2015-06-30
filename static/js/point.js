@@ -14,6 +14,14 @@ function SfsCtrl($scope, $http) {
 		$scope.TypeList = data;
 	});
 
+	//get layout data
+	$http.get('/point/GetWeekPoints/2').error(function(data) {
+		alert('get type list error.')
+	}).success(function(data) {
+		//$scope.TypeList = data;
+		console.log(data)
+	});
+
 	for(var i = 0; i <= $scope.DefaultLines; i++) {
 		var row = {
 			type: 10,
