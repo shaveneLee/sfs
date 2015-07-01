@@ -24,20 +24,10 @@ func (this *PointController) Edit() {
 	model := models.Point{}
 	this.Data["Str1"] = model.GetPoints()
 
-	/*
-		var slice [10]map[string]string
-		m := make(map[string]string)
-		m["aa"] = "bb"
-		fmt.Println(m)
-		slice[0] = m
-		fmt.Println(slice)
-	*/
-
 	var x interface{}
-	x = this.GetWeekPoints(2)
+	x = model.GetWeekPoints(2)
 	fmt.Println(x)
-
-	//	this.Data["Str1"] = this.GetSunday()
+	this.Data["Str1"] = x
 
 }
 

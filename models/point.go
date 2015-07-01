@@ -1,6 +1,8 @@
 package models
 
 import (
+	"fmt"
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
 	"time"
@@ -34,16 +36,14 @@ func init() {
 
 func (p *Point) GetPoints() []orm.Params {
 	var maps []orm.Params
-
 	o := orm.NewOrm()
-
 	o.QueryTable(new(Point)).Filter("create_time__gte", "2015-06-29").Filter("create_time__lte", "2015-07-05").Values(&maps)
 
 	return maps
 }
 
-func (this *Point) GetMonday() string {
-	t := time.Now()
+func (this *Point) GetMonday(t time.Time) string {
+	//t := time.Now()
 	week := t.Weekday().String()
 	var monday string
 	switch week {
@@ -65,8 +65,8 @@ func (this *Point) GetMonday() string {
 	return monday
 }
 
-func (this *Point) GetSunday() string {
-	t := time.Now()
+func (this *Point) GetSunday(t time.Time) string {
+	//t := time.Now()
 	week := t.Weekday().String()
 	var monday string
 	switch week {
@@ -84,20 +84,41 @@ func (this *Point) GetSunday() string {
 	case "Saturday":
 		t = t.AddDate(0, 0, 1)
 	}
-	monday = t.Format(t_layout)
+	//monday = t.Format(t_layout)
+	monday = beego.Date(t, "Y-m-d")
 	return monday
 }
 
 //get specify week points.
-//@ w param specify how many weeks data to get
+//@ w param specify how many weeks data to get (not include this week)
 func (this *Point) GetWeekPoints(w int) interface{} {
-	//point := models.Point{}
-	m := make(map[string]interface{})
-	m["aa"] = "bbb"
-	x := make(map[string]string)
-	x["xxx"] = "yy"
-	m["Point"] = x
-	return m
+	var points []orm.Params
+	o := orm.NewOrm()
+	result := make(map[string]interface{})
+
+	t := time.Now()
+	sunday_str := this.GetSunday(t)
+	t, _ = beego.DateParse(sunday_str, "Y-m-d")
+	for i := w; i > 0; i-- {
+		last_sunday := t.AddDate(0, 0, -7*i)
+		last_monday := last_sunday.AddDate(0, 0, -6)
+		last_sunday = last_sunday.Add(time.Hour*time.Duration(23) + time.Minute*time.Duration(59) + time.Second*time.Duration(59))
+		end_time := beego.Date(last_sunday, "Y-m-d H:i:s")
+		start_time := beego.Date(last_monday, "Y-m-d")
+		fmt.Println(start_time)
+		fmt.Println(end_time)
+
+		data := make(map[string]interface{})
+		data["start_time"] = start_time
+		data["end_time"] = end_time
+		data["time_str"] = start_time + "_" + end_time
+		o.QueryTable(new(Point)).Filter("create_time__gte", start_time).Filter("create_time__lte", end_time).Values(&points)
+
+		data["point"] = points
+		result[end_time] = data
+	}
+
+	return result
 }
 
 //任务类型枚举
