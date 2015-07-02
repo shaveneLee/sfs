@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
+	//	"fmt"
 	"github.com/astaxie/beego"
 	"sfs/models"
 	"strconv"
@@ -25,13 +25,8 @@ func (this *PointController) Edit() {
 	model := models.Point{}
 	this.Data["Str1"] = model.GetPoints()
 
-	index_keys, points := model.GetWeekPoints(1)
-	for k, v := range index_keys {
-		fmt.Println(k)
-		fmt.Println(v)
-	}
-	fmt.Println(points)
-	this.Data["Str1"] = index_keys
+	//index_keys, points := model.GetWeekPoints(1)
+	//this.Data["Str1"] = index_keys
 
 }
 

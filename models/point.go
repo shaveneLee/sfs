@@ -105,10 +105,12 @@ func (this *Point) GetWeekPoints(w int) ([]string, interface{}) {
 		last_monday := last_sunday.AddDate(0, 0, -6)
 		last_sunday = last_sunday.Add(time.Hour*time.Duration(23) + time.Minute*time.Duration(59) + time.Second*time.Duration(59))
 		end_time := beego.Date(last_sunday, "Y-m-d H:i:s")
+		end_date := beego.Date(last_sunday, "Y-m-d")
 		start_time := beego.Date(last_monday, "Y-m-d")
 
 		data := make(map[string]interface{})
 		data["start_time"] = start_time
+		data["end_date"] = end_date
 		data["end_time"] = end_time
 		data["time_str"] = start_time + "_" + end_time
 		o.QueryTable(new(Point)).Filter("create_time__gte", start_time).Filter("create_time__lte", end_time).Values(&points)

@@ -20,33 +20,23 @@ function SfsCtrl($scope, $http) {
 		alert('get data error.')
 	}).success(function(data) {
 		console.log(data)
-		for (var k in data.index_keys) {
-			var sunday = data.index_keys[k];
-			var points = data.points[sunday].point
-			for (var i in points) {
-				var row = {
-					type: points[i]['Type'],
-					name: points[i]['Name'],
-					hours: points[i]['Hours'],
-					stars: points[i]['Stars'],
-					score: points[i]['Hours'] * points[i]['Stars']
+		$scope.Weeks = data.index_keys;
+		$scope.ModelDatas = data.points;
+		for(var k in $scope.ModelDatas) {
+			if ($scope.ModelDatas[k]['point'].length < $scope.DefaultLines) {
+				var len = $scope.ModelDatas[k]['point'].length;
+				for (len; len <= $scope.DefaultLines; len++) {
+					var row = {
+						Name: '',
+						Hours: 0,
+						Stars: 0,
+						Type: 10	
+					}
+					$scope.ModelDatas[k]['point'][len] = row;
 				}
-				$scope.Rows.push(row);	
 			}
 		}
 	});
-/*
-	for(var i = 0; i <= $scope.DefaultLines; i++) {
-		var row = {
-			type: 10,
-			name: '',
-			hours: 0,
-			stars: 0,
-			score: 0,
-		}
-		$scope.Rows.push(row);	
-	}
-	*/
 
 	$scope.saveData = function() {
 		alert('xx');
