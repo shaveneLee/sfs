@@ -24,10 +24,13 @@ func (this *PointController) Edit() {
 	model := models.Point{}
 	this.Data["Str1"] = model.GetPoints()
 
-	var x interface{}
-	x = model.GetWeekPoints(2)
-	fmt.Println(x)
-	this.Data["Str1"] = x
+	index_keys, points := model.GetWeekPoints(2)
+	for k, v := range index_keys {
+		fmt.Println(k)
+		fmt.Println(v)
+	}
+	fmt.Println(points)
+	this.Data["Str1"] = index_keys
 
 }
 

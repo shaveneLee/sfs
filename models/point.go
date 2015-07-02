@@ -1,7 +1,7 @@
 package models
 
 import (
-	"fmt"
+	// "fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
@@ -91,9 +91,10 @@ func (this *Point) GetSunday(t time.Time) string {
 
 //get specify week points.
 //@ w param specify how many weeks data to get (not include this week)
-func (this *Point) GetWeekPoints(w int) interface{} {
+func (this *Point) GetWeekPoints(w int) ([]string, interface{}) {
 	var points []orm.Params
 	o := orm.NewOrm()
+	index_keys := []string{}
 	result := make(map[string]interface{})
 
 	t := time.Now()
@@ -105,8 +106,6 @@ func (this *Point) GetWeekPoints(w int) interface{} {
 		last_sunday = last_sunday.Add(time.Hour*time.Duration(23) + time.Minute*time.Duration(59) + time.Second*time.Duration(59))
 		end_time := beego.Date(last_sunday, "Y-m-d H:i:s")
 		start_time := beego.Date(last_monday, "Y-m-d")
-		fmt.Println(start_time)
-		fmt.Println(end_time)
 
 		data := make(map[string]interface{})
 		data["start_time"] = start_time
@@ -116,9 +115,12 @@ func (this *Point) GetWeekPoints(w int) interface{} {
 
 		data["point"] = points
 		result[end_time] = data
+
+		// index_keys[w-i] = end_time
+		index_keys = append(index_keys, end_time)
 	}
 
-	return result
+	return index_keys, result
 }
 
 //任务类型枚举
