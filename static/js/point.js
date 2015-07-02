@@ -1,5 +1,6 @@
 function SfsCtrl($scope, $http) {
 	$scope.data = "sarong";
+	$scope.MaxShowLastWeeks = 1;
 	$scope.DefaultLines = 7;
 	$scope.Rows = [];
 	$scope.TypeClass = {
@@ -15,13 +16,26 @@ function SfsCtrl($scope, $http) {
 	});
 
 	//get layout data
-	$http.get('/point/GetWeekPoints/2').error(function(data) {
-		alert('get type list error.')
+	$http.get('/point/GetWeekPointsJson/' + $scope.MaxShowLastWeeks).error(function(data) {
+		alert('get data error.')
 	}).success(function(data) {
-		//$scope.TypeList = data;
 		console.log(data)
+		for (var k in data.index_keys) {
+			var sunday = data.index_keys[k];
+			var points = data.points[sunday].point
+			for (var i in points) {
+				var row = {
+					type: points[i]['Type'],
+					name: points[i]['Name'],
+					hours: points[i]['Hours'],
+					stars: points[i]['Stars'],
+					score: points[i]['Hours'] * points[i]['Stars']
+				}
+				$scope.Rows.push(row);	
+			}
+		}
 	});
-
+/*
 	for(var i = 0; i <= $scope.DefaultLines; i++) {
 		var row = {
 			type: 10,
@@ -32,6 +46,7 @@ function SfsCtrl($scope, $http) {
 		}
 		$scope.Rows.push(row);	
 	}
+	*/
 
 	$scope.saveData = function() {
 		alert('xx');

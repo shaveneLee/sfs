@@ -10,4 +10,5 @@ func init() {
 	beego.AutoRouter(&controllers.PointController{})
 	beego.Router("/point/SavePoints", &controllers.PointController{}, "post:SavePoints")
 	beego.Router("/point/GetTypeList", &controllers.PointController{}, "get:GetTypeList")
+	beego.Router("/point/GetWeekPointsJson/:id", &controllers.PointController{}, "get:GetWeekPointsJson")
 }

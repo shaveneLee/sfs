@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"sfs/models"
+	"strconv"
 )
 
 type PointController struct {
@@ -24,7 +25,7 @@ func (this *PointController) Edit() {
 	model := models.Point{}
 	this.Data["Str1"] = model.GetPoints()
 
-	index_keys, points := model.GetWeekPoints(2)
+	index_keys, points := model.GetWeekPoints(1)
 	for k, v := range index_keys {
 		fmt.Println(k)
 		fmt.Println(v)
@@ -52,12 +53,18 @@ func (this *PointController) SavePoints() {
 
 //get specify week points by param.
 //@ m param
-func (this *PointController) GetWeekPoints(w int) interface{} {
-	//point := models.Point{}
-	m := make(map[string]interface{})
-	m["aa"] = "bbb"
-	x := make(map[string]string)
-	x["xxx"] = "yy"
-	m["Point"] = x
-	return m
+func (this *PointController) GetWeekPointsJson() {
+	id := this.Ctx.Input.Param(":id")
+	w, _ := strconv.ParseInt(id, 10, 64)
+	init_id := int(w)
+
+	model := models.Point{}
+
+	result := make(map[string]interface{})
+	index_keys, points := model.GetWeekPoints(init_id)
+	result["index_keys"] = index_keys
+	result["points"] = points
+
+	this.Data["json"] = result
+	this.ServeJson()
 }

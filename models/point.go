@@ -100,7 +100,7 @@ func (this *Point) GetWeekPoints(w int) ([]string, interface{}) {
 	t := time.Now()
 	sunday_str := this.GetSunday(t)
 	t, _ = beego.DateParse(sunday_str, "Y-m-d")
-	for i := w; i > 0; i-- {
+	for i := w; i >= 0; i-- {
 		last_sunday := t.AddDate(0, 0, -7*i)
 		last_monday := last_sunday.AddDate(0, 0, -6)
 		last_sunday = last_sunday.Add(time.Hour*time.Duration(23) + time.Minute*time.Duration(59) + time.Second*time.Duration(59))
