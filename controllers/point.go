@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	//	"fmt"
 	"github.com/astaxie/beego"
 	"sfs/models"
 	"strconv"
@@ -10,6 +9,12 @@ import (
 
 type PointController struct {
 	beego.Controller
+}
+
+type Result struct {
+	success bool
+	message string
+	datas   interface{}
 }
 
 func (this *PointController) Index() {
@@ -39,11 +44,21 @@ func (this *PointController) GetTypeList() {
 func (this *PointController) SavePoints() {
 	result := make(map[string]interface{})
 	result["sucess"] = true
-	result["message"] = "call success"
-	result["datas"] = "xxx"
-	json_str, _ := json.Marshal(result)
-	this.Ctx.Output.Body([]byte(json_str))
-	return
+	result["message"] = ""
+	// p := make([]byte, 10)
+	// bytesRead, _ := this.Ctx.Request.Body
+
+	// result["datas"] = this.Ctx.Request.Body
+	req := struct{ Title string }{}
+	if err := json.Unmarshal(this.Ctx.Input.RequestBody, &req); err != nil {
+		this.Ctx.Output.SetStatus(400)
+		this.Ctx.Output.Body([]byte("empty title"))
+		return
+	}
+	result["datas"] = req.Title
+
+	this.Data["json"] = result
+	this.ServeJson()
 }
 
 //get specify week points by param.

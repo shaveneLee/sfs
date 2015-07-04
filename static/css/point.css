@@ -9,3 +9,16 @@
 #point_box .span1, #point_box .span1 {
 	width: 55px;
 }
+
+#point_box .point-type span {
+	cursor: pointer;
+}
+
+#point_box .align-right {
+	text-align: right;
+}
+
+#point_box .submit-btn {
+	margin-left: 8px;
+	clear : both;
+}
