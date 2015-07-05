@@ -15,6 +15,8 @@
 <div class="alert alert-info" id="page_title">
 	<h2>Summary & Forward</h2>
 </div>
+ 
+{{{.Str1}}}
 
 <div ng-controller="SfsCtrl" id="point_box">
     <!-- foreach output table -->

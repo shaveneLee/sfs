@@ -28,11 +28,7 @@ func (this *PointController) Edit() {
 	beego.TemplateLeft = "{{{"
 	beego.TemplateRight = "}}}"
 	model := models.Point{}
-	this.Data["Str1"] = model.GetPoints()
-
-	//index_keys, points := model.GetWeekPoints(1)
-	//this.Data["Str1"] = index_keys
-
+	this.Data["Str1"] = model.Test()
 }
 
 func (this *PointController) GetTypeList() {
@@ -45,18 +41,40 @@ func (this *PointController) SavePoints() {
 	result := make(map[string]interface{})
 	result["sucess"] = true
 	result["message"] = ""
-	// p := make([]byte, 10)
-	// bytesRead, _ := this.Ctx.Request.Body
-
-	// result["datas"] = this.Ctx.Request.Body
-	req := struct{ Title string }{}
-	if err := json.Unmarshal(this.Ctx.Input.RequestBody, &req); err != nil {
-		this.Ctx.Output.SetStatus(400)
-		this.Ctx.Output.Body([]byte("empty title"))
+	//var post_data interface{}
+	var post_data map[string]interface{}
+	if err := json.Unmarshal(this.Ctx.Input.RequestBody, &post_data); err != nil {
+		result["message"] = err.Error()
+		this.Data["json"] = result
+		this.ServeJson()
 		return
 	}
-	result["datas"] = req.Title
+	model := models.Point{}
+	model.Id = 1
+	model.Name = "CCCC"
+	err := model.InsertOrUpdate()
+	if err != nil {
 
+	}
+	/*
+		for _, point := range post_data {
+			for _, value := range point{
+				beego.Info(point)
+			}
+			beego.Info(point)
+		}
+		/*
+			err := model.InsertOrUpdate()
+			if (err != nil) {
+				result["message"] = err.Error()
+				this.Data["json"] = result
+				this.ServeJson()
+				return;
+			}
+	*/
+
+	result["success"] = true
+	result["datas"] = err
 	this.Data["json"] = result
 	this.ServeJson()
 }

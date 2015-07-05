@@ -34,12 +34,20 @@ func init() {
 	orm.RegisterModel(new(Point))
 }
 
-func (p *Point) GetPoints() []orm.Params {
-	var maps []orm.Params
+func (p *Point) Test() string {
 	o := orm.NewOrm()
-	o.QueryTable(new(Point)).Filter("create_time__gte", "2015-06-29").Filter("create_time__lte", "2015-07-05").Values(&maps)
-
-	return maps
+	point := Point{Id: 2, Name: "BBBBBBBB"}
+	err := o.Read(&point)
+	if _, err := o.Update(&point, "Name"); err != nil {
+		beego.Info(err.Error())
+	}
+	if err == orm.ErrNoRows {
+		beego.Info("miss it")
+		return "no exit"
+	} else {
+		beego.Info("got it")
+		return "got it"
+	}
 }
 
 func (this *Point) GetMonday(t time.Time) string {
@@ -125,10 +133,27 @@ func (this *Point) GetWeekPoints(w int) ([]string, interface{}) {
 	return index_keys, result
 }
 
-//任务类型枚举
+//type list enum
 func (p *Point) GetTypeList() map[string]string {
 	TypeList := make(map[string]string)
 	TypeList["10"] = "Planning"
 	TypeList["20"] = "Unexpect"
 	return TypeList
+}
+
+//insert or update point
+func (m *Point) InsertOrUpdate() error {
+	o := orm.NewOrm()
+
+	err := o.Read(m)
+	if err == orm.ErrNoRows { // not exit, insert
+		if _, err := o.Insert(m); err != nil {
+			return err
+		}
+	} else { // update
+		if _, err := o.Update(m); err != nil {
+			return err
+		}
+	}
+	return nil
 }

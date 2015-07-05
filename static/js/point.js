@@ -60,15 +60,29 @@ function SfsCtrl($scope, $http) {
 
 	//save points
 	$scope.saveData = function() {
-		$http.post('/point/SavePoints', {Title: "xxxxf"}).
+		$scope.getSaveData();
+		$http.post('/point/SavePoints', $scope.SaveData).
 			error(function(data) {
-					console.log(data);
-					alert('error');
+					alert(data.message);
 			}).
 			success(function(data) {
 					console.log(data)
 					alert('success')
 			});
+	}
+
+	$scope.getSaveData = function() {
+		$scope.SaveData = {};
+		var key = 0;
+		for (var k in $scope.ModelDatas) {
+			for (var i in $scope.ModelDatas[k].point) {
+				var model = $scope.ModelDatas[k].point[i];
+				if (null == model.Name || '' == model.Name) {
+					continue;
+				}
+				$scope.SaveData[key++] = model
+			}
+		}
 	}
 
 	//auto sum points
