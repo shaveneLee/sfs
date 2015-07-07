@@ -49,28 +49,28 @@ func (this *PointController) SavePoints() {
 		this.ServeJson()
 		return
 	}
-	model := models.Point{}
-	model.Id = 1
-	model.Name = "CCCC"
+	model := models.Point{Id: 2}
+	model.Name = "sarong"
 	err := model.InsertOrUpdate()
 	if err != nil {
-
+		result["message"] = err.Error()
+		this.Data["json"] = result
+		this.ServeJson()
+		return
+	}
+	for _, point := range post_data {
+		beego.Info(point)
+		//model := models.Point{}
+		//model.Id, _ := point.Id
 	}
 	/*
-		for _, point := range post_data {
-			for _, value := range point{
-				beego.Info(point)
-			}
-			beego.Info(point)
+		err := model.InsertOrUpdate()
+		if (err != nil) {
+			result["message"] = err.Error()
+			this.Data["json"] = result
+			this.ServeJson()
+			return;
 		}
-		/*
-			err := model.InsertOrUpdate()
-			if (err != nil) {
-				result["message"] = err.Error()
-				this.Data["json"] = result
-				this.ServeJson()
-				return;
-			}
 	*/
 
 	result["success"] = true

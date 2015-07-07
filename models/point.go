@@ -4,6 +4,7 @@ import (
 	// "fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
+	"github.com/astaxie/beego/utils"
 	_ "github.com/go-sql-driver/mysql"
 	"time"
 )
@@ -36,18 +37,27 @@ func init() {
 
 func (p *Point) Test() string {
 	o := orm.NewOrm()
-	point := Point{Id: 2, Name: "BBBBBBBB"}
-	err := o.Read(&point)
-	if _, err := o.Update(&point, "Name"); err != nil {
-		beego.Info(err.Error())
+	point := Point{}
+	point.Id = 1
+	point.Name = "axxxa"
+	//err := o.Read(&point)
+	beemap := utils.NewBeeMap()
+	beemap.Set("aa", "bb")
+	xx := beemap.Get("aa")
+	beego.Info(xx)
+
+	num, err := o.QueryTable(new(Point)).Filter("Id", point.Id).Update(orm.Params{
+		"Id":   point.Id,
+		"Name": point.Name,
+	})
+	beego.Info("aaaaaaaaaaaaaaaa")
+	beego.Info(num)
+	beego.Info(err)
+	if nil != err {
+		return "aaaa"
+		return err.Error()
 	}
-	if err == orm.ErrNoRows {
-		beego.Info("miss it")
-		return "no exit"
-	} else {
-		beego.Info("got it")
-		return "got it"
-	}
+	return "ok"
 }
 
 func (this *Point) GetMonday(t time.Time) string {
@@ -144,14 +154,24 @@ func (p *Point) GetTypeList() map[string]string {
 //insert or update point
 func (m *Point) InsertOrUpdate() error {
 	o := orm.NewOrm()
+	q := Point{Id: m.Id}
 
-	err := o.Read(m)
+	err := o.Read(&q)
+
 	if err == orm.ErrNoRows { // not exit, insert
 		if _, err := o.Insert(m); err != nil {
 			return err
 		}
 	} else { // update
-		if _, err := o.Update(m); err != nil {
+		_, err := o.QueryTable(new(Point)).Filter("Id", m.Id).Update(orm.Params{
+			"Id":     m.Id,
+			"Name":   m.Name,
+			"Type":   m.Type,
+			"Hours":  m.Hours,
+			"Stars":  m.Stars,
+			"Points": m.Points,
+		})
+		if nil != err {
 			return err
 		}
 	}
