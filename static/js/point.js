@@ -61,6 +61,7 @@ function SfsCtrl($scope, $http) {
 	//save points
 	$scope.saveData = function() {
 		$scope.getSaveData();
+		console.log($scope.SaveData)
 		$http.post('/point/SavePoints', $scope.SaveData).
 			error(function(data) {
 					alert(data.message);

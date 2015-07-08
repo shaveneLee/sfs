@@ -4,7 +4,7 @@ import (
 	// "fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
-	"github.com/astaxie/beego/utils"
+	//	"github.com/astaxie/beego/utils"
 	_ "github.com/go-sql-driver/mysql"
 	"time"
 )
@@ -22,12 +22,12 @@ type Point struct {
 	Hours        float64 `orm:"digits(10);decimals(1)"`
 	Stars        float64 `orm:"digits(10);decimals(1)"`
 	Points       float64 `orm:"digits(10);decimals(1)"`
-	StartTime    time.Time
-	EndTime      time.Time
+	StartTime    string
+	EndTime      string
 	CreateUserId int
-	CreateTime   time.Time
+	CreateTime   string
 	UpdateUserId int
-	UpdateTime   time.Time
+	UpdateTime   string
 	Remark       string
 }
 
@@ -41,18 +41,11 @@ func (p *Point) Test() string {
 	point.Id = 1
 	point.Name = "axxxa"
 	//err := o.Read(&point)
-	beemap := utils.NewBeeMap()
-	beemap.Set("aa", "bb")
-	xx := beemap.Get("aa")
-	beego.Info(xx)
 
-	num, err := o.QueryTable(new(Point)).Filter("Id", point.Id).Update(orm.Params{
+	_, err := o.QueryTable(new(Point)).Filter("Id", point.Id).Update(orm.Params{
 		"Id":   point.Id,
 		"Name": point.Name,
 	})
-	beego.Info("aaaaaaaaaaaaaaaa")
-	beego.Info(num)
-	beego.Info(err)
 	if nil != err {
 		return "aaaa"
 		return err.Error()
@@ -158,7 +151,8 @@ func (m *Point) InsertOrUpdate() error {
 
 	err := o.Read(&q)
 
-	if err == orm.ErrNoRows { // not exit, insert
+	if nil != err { // not exit, insert
+		m.CreateTime = beego.Date(time.Now(), "Y-m-d H:i:s")
 		if _, err := o.Insert(m); err != nil {
 			return err
 		}

@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"github.com/astaxie/beego"
+	//	"reflect"
 	"sfs/models"
 	"strconv"
 )
@@ -27,8 +28,6 @@ func (this *PointController) Edit() {
 	this.TplNames = "point/edit.tpl"
 	beego.TemplateLeft = "{{{"
 	beego.TemplateRight = "}}}"
-	model := models.Point{}
-	this.Data["Str1"] = model.Test()
 }
 
 func (this *PointController) GetTypeList() {
@@ -39,42 +38,38 @@ func (this *PointController) GetTypeList() {
 
 func (this *PointController) SavePoints() {
 	result := make(map[string]interface{})
-	result["sucess"] = true
+	result["sucess"] = false
 	result["message"] = ""
-	//var post_data interface{}
-	var post_data map[string]interface{}
+	//var post_data map[string]interface{}
+	post_data := make(map[string]map[string]interface{})
 	if err := json.Unmarshal(this.Ctx.Input.RequestBody, &post_data); err != nil {
 		result["message"] = err.Error()
 		this.Data["json"] = result
 		this.ServeJson()
 		return
 	}
-	model := models.Point{Id: 2}
-	model.Name = "sarong"
-	err := model.InsertOrUpdate()
-	if err != nil {
-		result["message"] = err.Error()
-		this.Data["json"] = result
-		this.ServeJson()
-		return
-	}
+	//beego.Info(post_data)
 	for _, point := range post_data {
-		beego.Info(point)
-		//model := models.Point{}
-		//model.Id, _ := point.Id
-	}
-	/*
+		model := models.Point{}
+		val, _ := strconv.ParseInt(point["Id"].(string), 10, 64)
+		model.Id = int(val)
+		model.Name, _ = point["Name"].(string)
+		//val, _ = strconv.ParseInt(point["Type"].(string), 10, 64)
+		model.Type = 10
+		model.Hours, _ = point["Hours"].(float64)
+		model.Stars, _ = point["Stars"].(float64)
+		model.Points, _ = point["Points"].(float64)
+
+		beego.Info(model)
 		err := model.InsertOrUpdate()
-		if (err != nil) {
+		if err != nil {
 			result["message"] = err.Error()
-			this.Data["json"] = result
-			this.ServeJson()
-			return;
+			continue
 		}
-	*/
+	}
 
 	result["success"] = true
-	result["datas"] = err
+	result["datas"] = post_data
 	this.Data["json"] = result
 	this.ServeJson()
 }
