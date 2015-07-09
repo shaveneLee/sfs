@@ -124,7 +124,7 @@ func (this *Point) GetWeekPoints(w int) ([]string, interface{}) {
 		data["end_date"] = end_date
 		data["end_time"] = end_time
 		data["time_str"] = start_time + "_" + end_time
-		o.QueryTable(new(Point)).Filter("create_time__gte", start_time).Filter("create_time__lte", end_time).Values(&points)
+		o.QueryTable(new(Point)).Filter("start_time__gte", start_time).Filter("end_time__lte", end_time).Values(&points)
 
 		data["point"] = points
 		result[end_time] = data
@@ -164,6 +164,9 @@ func (m *Point) InsertOrUpdate() error {
 			"Hours":  m.Hours,
 			"Stars":  m.Stars,
 			"Points": m.Points,
+			//"StartTime":  m.StartTime,
+			//"EndTime":    m.EndTime,
+			"UpdateTime": beego.Date(time.Now(), "Y-m-d H:i:s"),
 		})
 		if nil != err {
 			return err

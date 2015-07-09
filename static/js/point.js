@@ -81,6 +81,8 @@ function SfsCtrl($scope, $http) {
 				if (null == model.Name || '' == model.Name) {
 					continue;
 				}
+				model.StartTime = $scope.ModelDatas[k].start_time;
+				model.EndTime = $scope.ModelDatas[k].end_time
 				$scope.SaveData[key++] = model
 			}
 		}

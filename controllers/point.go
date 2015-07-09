@@ -3,7 +3,9 @@ package controllers
 import (
 	"encoding/json"
 	"github.com/astaxie/beego"
+	//	"github.com/astaxie/beego/cache"
 	//	"reflect"
+	"sfs/common"
 	"sfs/models"
 	"strconv"
 )
@@ -51,14 +53,14 @@ func (this *PointController) SavePoints() {
 	//beego.Info(post_data)
 	for _, point := range post_data {
 		model := models.Point{}
-		val, _ := strconv.ParseInt(point["Id"].(string), 10, 64)
-		model.Id = int(val)
-		model.Name, _ = point["Name"].(string)
-		//val, _ = strconv.ParseInt(point["Type"].(string), 10, 64)
-		model.Type = 10
-		model.Hours, _ = point["Hours"].(float64)
-		model.Stars, _ = point["Stars"].(float64)
-		model.Points, _ = point["Points"].(float64)
+		model.Id = common.GetInt(point["Id"])
+		model.Name = common.GetString(point["Name"])
+		model.Type = common.GetInt16(point["Type"])
+		model.Hours = common.GetFloat64(point["Hours"])
+		model.Stars = common.GetFloat64(point["Stars"])
+		model.Points = common.GetFloat64(point["Points"])
+		model.StartTime = point["StartTime"].(string)
+		model.EndTime = point["EndTime"].(string)
 
 		beego.Info(model)
 		err := model.InsertOrUpdate()
