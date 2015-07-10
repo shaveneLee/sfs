@@ -17,7 +17,6 @@
 </div>
  
 {{{.Str1}}}
-
 <div ng-controller="SfsCtrl" id="point_box">
     <!-- foreach output table -->
 	<div class="panel panel-default col-md-6" ng-repeat="week in Weeks">
@@ -56,7 +55,25 @@
     </div>
 
     <div class="submit-btn">
-        <a class="btn btn-primary" ng-click="saveData()">Submit</a>
+        <a class="btn btn-primary pull-left" ng-click="saveData()">Submit</a>
+		<h4 id="fade_msg" class="pull-left">
+  			<label class="label label-success">wow,good job~</label>
+		</h4>
     </div>
+
+<div class="modal fade bs-overlay-modal-sm" id="overlay_modal" tabindex="-1" role="dialog" aria-labelledby="overlayModalLabel">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="overlay_title">Submitting</h4>
+      </div>
+      <div class="modal-body">
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped active" style="width:100%;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
 </html>

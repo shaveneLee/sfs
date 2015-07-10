@@ -22,3 +22,8 @@
 	margin-left: 8px;
 	clear : both;
 }
+
+#fade_msg {
+	display: none;
+	margin-left: 35px;
+}

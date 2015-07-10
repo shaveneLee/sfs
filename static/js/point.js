@@ -1,5 +1,4 @@
 function SfsCtrl($scope, $http) {
-	$scope.data = "sarong";
 	$scope.MaxShowLastWeeks = 1;
 	$scope.DefaultLines = 7;
 	$scope.Rows = [];
@@ -16,7 +15,8 @@ function SfsCtrl($scope, $http) {
 	});
 
 	//get layout data
-	$http.get('/point/GetWeekPointsJson/' + $scope.MaxShowLastWeeks).error(function(data) {
+	var refresh = function() {
+		$http.get('/point/GetWeekPointsJson/' + $scope.MaxShowLastWeeks).error(function(data) {
 		alert('get data error.')
 	}).success(function(data) {
 		console.log(data)
@@ -56,19 +56,28 @@ function SfsCtrl($scope, $http) {
 				$scope.SumScore[k] += $scope.ModelDatas[k]['point'][i].Points;
 			}
 		}
-	});
+	})
+	};
+
+	//init layout data
+	refresh();
 
 	//save points
 	$scope.saveData = function() {
 		$scope.getSaveData();
 		console.log($scope.SaveData)
+		show_overlay('submitting');
 		$http.post('/point/SavePoints', $scope.SaveData).
 			error(function(data) {
+					hide_overlay();
 					alert(data.message);
+					refresh();
 			}).
 			success(function(data) {
 					console.log(data)
-					alert('success')
+					hide_overlay();
+					display_saved_msg();
+					refresh();
 			});
 	}
 
@@ -120,4 +129,24 @@ function SfsCtrl($scope, $http) {
 			row.Type = 20;
 		}
 	}
+}
+
+var display_saved_msg = function() {
+	$('#fade_msg').fadeIn("slow");
+	$('#fade_msg').fadeOut("slow");
+}
+
+var show_overlay = function(title) {
+	if (undefined == title || null == title) {
+		title = 'Loading';
+	}
+	$('#overlay_title').html(title);
+	$('#overlay_modal').modal({
+		keyboard: false,		
+		backdrop: 'static',
+	});
+}
+
+var hide_overlay = function() {
+	$('#overlay_modal').modal('hide');
 }
