@@ -21,9 +21,8 @@ type Result struct {
 }
 
 func (this *PointController) Index() {
+	this.TplNames = "point/index.tpl"
 	this.Data["Str1"] = "aaa"
-	this.Data["json"] = "aaadd"
-	this.ServeJson()
 }
 
 func (this *PointController) Edit() {
