@@ -21,20 +21,20 @@ type Result struct {
 }
 
 func (this *PointController) Index() {
-	this.TplNames = "point/index.tpl"
+	this.TplName = "point/index.tpl"
 	this.Data["Str1"] = "aaa"
 }
 
 func (this *PointController) Edit() {
-	this.TplNames = "point/edit.tpl"
-	beego.TemplateLeft = "{{{"
-	beego.TemplateRight = "}}}"
+	this.TplName = "point/edit.tpl"
+	beego.BConfig.WebConfig.TemplateLeft = "{{{"
+	beego.BConfig.WebConfig.TemplateRight = "}}}"
 }
 
 func (this *PointController) GetTypeList() {
 	point := models.Point{}
 	this.Data["json"] = point.GetTypeList()
-	this.ServeJson()
+	this.ServeJSON()
 }
 
 func (this *PointController) SavePoints() {
@@ -46,7 +46,7 @@ func (this *PointController) SavePoints() {
 	if err := json.Unmarshal(this.Ctx.Input.RequestBody, &post_data); err != nil {
 		result["message"] = err.Error()
 		this.Data["json"] = result
-		this.ServeJson()
+		this.ServeJSON()
 		return
 	}
 	//beego.Info(post_data)
@@ -72,7 +72,7 @@ func (this *PointController) SavePoints() {
 	result["success"] = true
 	result["datas"] = post_data
 	this.Data["json"] = result
-	this.ServeJson()
+	this.ServeJSON()
 }
 
 //get specify week points by param.
@@ -90,5 +90,5 @@ func (this *PointController) GetWeekPointsJson() {
 	result["points"] = points
 
 	this.Data["json"] = result
-	this.ServeJson()
+	this.ServeJSON()
 }
